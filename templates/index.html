@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recruitment Application</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link href="./static/styles/main.css" rel="stylesheet" type="text/css">
+  <link href="./static/styles/viz.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <main>
+    <div>
+      <section>
+        <h1>Targeting New Customers</h1>
+        <p>This primarily focuses on at-risk individuals; those who either smoke or don't exercise, and don't already have life insurance.</p>
+      </section>
+      <section>
+        <h2>State By State</h2>
+        <div class="radios">
+          <div class="radio-container">
+            <input type="radio" id="risk-radio" name="state-view" value="risk" checked/>
+            <label for="risk-radio">At-Risk Individuals</label>
+          </div>
+          <div class="radio-container">
+            <input type="radio" id="stability-radio" name="state-view" value="stability"/>
+            <label for="stability-radio">Economic Stability</label>
+          </div>
+        </div>
+        <div id="state-map"></div>
+      </section>
+      <section>
+        <h2>Demographics</h2>
+        <div class="radios">
+          <div class="radio-container">
+            <input type="radio" id="race-radio" name="bar-view" value="race" checked/>
+            <label for="race-radio">Race</label>
+          </div>
+          <div class="radio-container">
+            <input type="radio" id="education-radio" name="bar-view" value="education"/>
+            <label for="education-radio">Education</label>
+          </div>
+          <div class="radio-container">
+            <input type="radio" id="ownership-radio" name="bar-view" value="ownership"/>
+            <label for="ownership-radio">Home Ownership</label>
+          </div>
+        </div>
+        <div id="bar-chart"></div>
+      </section>
+      <section>
+        <h2>Social Media Usage</h2>
+        <div id="line-chart"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="./static/scripts/helper.js"></script>
+  <script src="./static/scripts/states.js"></script>
+  <script src="./static/scripts/demographics.js"></script>
+  <script src="./static/scripts/social.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/* Start State Map */
+
+.state-container {
+  fill: none;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+div.state-tooltip {
+  position: absolute;
+  padding: 20px;
+  font-size: 12px;
+  background: #00003A;
+  color: #ffffff;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+div.state-tooltip h2 {
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+div.state-tooltip h3 {
+  text-decoration: underline;
+}
+
+div.state-tooltipp {
+  margin: 5px 0;
+}
+
+/* End State Map */
+
+/* Start Bar Chart */
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000000;
+  shape-rendering: crispEdges;
+}
+
+.bar-text {
+  font-size: 10px;
+}
+
+/* End Bar Chart */
+
+/* Start Line Chart */
+
+.social-line {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 2px;
+}
+
+/* End Line Chart */
