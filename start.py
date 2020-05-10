@@ -45,10 +45,10 @@ def query_db(query):
 def index():
     return render_template('index.html')
 
-@app.route('/api/state/risk', methods=['GET'])
+@app.route('/api/state/total', methods=['GET'])
 def get_state_risk():
 
-    result_df = query_db('''WITH at_risk AS (SELECT state, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY state),
+    result_df = query_db('''WITH at_risk AS (SELECT state, COUNT(id) AS total FROM customer GROUP BY state),
                             risk_aggs AS (SELECT MAX(total) AS max_num, MIN(total) AS min_num FROM at_risk)
                             SELECT ar.state, ar.total, (((ar.total-ra.min_num)*1.0/(ra.max_num-ra.min_num)*1.0)*100) AS percentage FROM at_risk ar, risk_aggs ra;''')
     result_dict = result_df.to_dict('records')
@@ -58,7 +58,7 @@ def get_state_risk():
 @app.route('/api/state/stability', methods=['GET'])
 def get_state_stability():
 
-    result_df = query_db('''WITH at_risk AS (SELECT state, AVG(economic_stability) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY state),
+    result_df = query_db('''WITH at_risk AS (SELECT state, AVG(economic_stability) AS total FROM customer GROUP BY state),
                             risk_aggs AS (SELECT MAX(total) AS max_num, MIN(total) AS min_num FROM at_risk)
                             SELECT ar.state, ar.total, (((ar.total-ra.min_num)*1.0/(ra.max_num-ra.min_num)*1.0)*100) AS percentage FROM at_risk ar, risk_aggs ra;''')
     result_dict = result_df.to_dict('records')
@@ -68,7 +68,7 @@ def get_state_stability():
 @app.route('/api/demo/race', methods=['GET'])
 def get_demo_race():
 
-    result_df = query_db('''SELECT race_code, gender, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY race_code, gender;''')
+    result_df = query_db('''SELECT r.value AS race, c.gender, COUNT(c.id) AS total FROM customer c, race r WHERE c.race_code = r.code GROUP BY r.value, c.gender;''')
     result_dict = result_df.to_dict('records')
 
     return jsonify({'data': result_dict})
@@ -76,7 +76,7 @@ def get_demo_race():
 @app.route('/api/demo/education', methods=['GET'])
 def get_demo_education():
 
-    result_df = query_db('''SELECT coalesce(education_id, 0) AS education_id, gender, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY education_id, gender;''')
+    result_df = query_db('''SELECT coalesce(e.value, 'None') AS education_type, c.gender, COUNT(c.id) AS total FROM customer c, education e WHERE c.education_id = e.id GROUP BY e.value, c.gender;''')
     result_dict = result_df.to_dict('records')
 
     return jsonify({'data': result_dict})
@@ -84,19 +84,19 @@ def get_demo_education():
 @app.route('/api/demo/ownership', methods=['GET'])
 def get_demo_home():
 
-    result_df = query_db('''SELECT home_owner, gender, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE AND home_owner != ' ' GROUP BY home_owner, gender
+    result_df = query_db('''SELECT home_owner, gender, COUNT(id) AS total FROM customer WHERE home_owner != ' ' GROUP BY home_owner, gender
                             UNION ALL
-                            SELECT 'N' AS home_owner, gender, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE AND home_owner = ' ' GROUP BY home_owner, gender''')
+                            SELECT 'N' AS home_owner, gender, COUNT(id) AS total FROM customer WHERE home_owner = ' ' GROUP BY home_owner, gender''')
     result_dict = result_df.to_dict('records')
 
     return jsonify({'data': result_dict})
 
-@app.route('/api/social/risk', methods=['GET'])
+@app.route('/api/social/total', methods=['GET'])
 def get_social_risk():
 
-    result_df = query_db('''SELECT 'youtube' AS platform, youtube_user_rank AS social_rank, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY youtube_user_rank
+    result_df = query_db('''SELECT 'youtube' AS platform, youtube_user_rank AS social_rank, COUNT(id) AS total FROM customer GROUP BY youtube_user_rank
                             UNION ALL
-                            SELECT 'facebook' AS platform, facebook_user_rank AS social_rank, COUNT(id) AS total FROM customer WHERE (is_smoker IS TRUE OR is_exerciser IS FALSE) AND has_insurance IS FALSE GROUP BY facebook_user_rank;''')
+                            SELECT 'facebook' AS platform, facebook_user_rank AS social_rank, COUNT(id) AS total FROM customer GROUP BY facebook_user_rank;''')
     result_dict = result_df.to_dict('records')
 
     return jsonify({'data': result_dict})

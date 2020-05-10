@@ -45,12 +45,12 @@
   const promises = [
     d3.json("/api/demo/race").then(d => {
       d.data.forEach(val => {
-        raceMap[val.race_code] = [...raceMap[val.race_code] || [], { gender: val.gender, total: val.total }];
+        raceMap[val.race] = [...raceMap[val.race] || [], { gender: val.gender, total: val.total }];
       });
     }),
     d3.json("/api/demo/education").then(d => {
       d.data.forEach(val => {
-        educationMap[val.education_id] = [...educationMap[val.education_id] || [], { gender: val.gender, total: val.total }];
+        educationMap[val.education_type] = [...educationMap[val.education_type] || [], { gender: val.gender, total: val.total }];
       });
     }),
     d3.json("/api/demo/ownership").then(d => {
@@ -65,16 +65,16 @@
   function createAll() {
     d3.selectAll("input[name='bar-view']").on("change", function() {
       if(this.value === "race") {
-        createBar(raceMap, "Race Code", "At-Risk Individuals", 750);
+        createBar(raceMap, "Race", "Individuals", 750);
       }
       else if(this.value === "education") {
-        createBar(educationMap, "Education ID", "At-Risk Individuals", 750);
+        createBar(educationMap, "Education", "Individuals", 750);
       }
       else if(this.value === "ownership") {
-        createBar(ownershipMap, "Home Owner Code", "At-Risk Individuals", 750);
+        createBar(ownershipMap, "Home Owner Code", "Individuals", 750);
       }
     });
-    createBar(raceMap, "Race Code", "At-Risk Individuals", 0);
+    createBar(raceMap, "Race", "Individuals", 0);
   }
   
   function createBar(data, xText, yText, speed) {

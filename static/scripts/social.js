@@ -24,7 +24,7 @@
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   const promises = [
-    d3.json("/api/social/risk").then(d => {
+    d3.json("/api/social/total").then(d => {
       return d.data;
     })
   ];
@@ -79,7 +79,7 @@
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("At-Risk Individuals");
+      .text("Individuals");
 
     svg.selectAll(".dot")
       .data(data)

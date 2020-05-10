@@ -82,7 +82,7 @@
     d3.tsv("./static/data/state-names.tsv", d => {
       stateNames.set(d.id, { code: d.code, name: d.name });
     }),
-    d3.json("/api/state/risk").then(d => {
+    d3.json("/api/state/total").then(d => {
       d.data.forEach(d => {
         riskMap.set(d.state, { total: d.total, percentage: d.percentage });
       });
@@ -99,13 +99,13 @@
   function createAll([us]) {
     d3.selectAll("input[name='state-view']").on("change", function() {
       if(this.value === "risk") {
-        createMap(us, riskMap, 'At-Risk Individuals', 'Number of At-Risk Individuals');
+        createMap(us, riskMap, 'Individuals', 'Number of Individuals');
       }
       else if(this.value === "stability") {
-        createMap(us, stabilityMap, 'Economic Stability', 'Average Economic Stability (1-30) of At-Risk Individuals');
+        createMap(us, stabilityMap, 'Economic Stability', 'Average Economic Stability (1-30) of Individuals');
       }
     });
-    createMap(us, riskMap, 'At-Risk Individuals', 'Number of At-Risk Individuals');
+    createMap(us, riskMap, 'Individuals', 'Number of Individuals');
   }
 
   function createMap(us, map, title, caption) {
